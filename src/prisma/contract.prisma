@@ -1,0 +1,153 @@
+enum Role {
+  PLAYER
+  OWNER
+  ORGANIZER
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  phone     String?
+  role      Role     @default(PLAYER)
+
+  fields    Field[]
+  bookings  Booking[]
+  reviews   Review[]
+
+  tournaments Tournament[]
+  tournamentParticipants TournamentParticipant[]
+
+  notifications Notification[]
+
+  createdAt TimestamptzString @default(now())
+  updatedAt temporal.updatedAtString()
+}
+
+model Field {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  address     String
+  pricePerHour Float
+
+  ownerId Int
+  owner   User @relation(fields: [ownerId], references: [id])
+
+  bookings Booking[]
+  reviews  Review[]
+
+  createdAt TimestamptzString @default(now())
+  updatedAt temporal.updatedAtString()
+}
+
+model Booking {
+  id Int @id @default(autoincrement())
+
+  userId  Int
+  fieldId Int
+
+  user  User  @relation(fields: [userId], references: [id])
+  field Field @relation(fields: [fieldId], references: [id])
+
+  startTime  TimestamptzString
+  endTime    TimestamptzString
+  totalPrice Float
+  status     BookingStatus @default(PENDING)
+
+  payment Payment?
+
+  createdAt TimestamptzString @default(now())
+}
+
+model Payment {
+  id Int @id @default(autoincrement())
+
+  bookingId Int     @unique
+  booking   Booking @relation(fields: [bookingId], references: [id])
+
+  amount        Float
+  method        String
+  transactionId String?
+  proofImage    String?
+  status        PaymentStatus @default(PENDING)
+
+  createdAt TimestamptzString @default(now())
+}
+
+model Review {
+  id Int @id @default(autoincrement())
+
+  userId  Int
+  fieldId Int
+
+  user  User @relation(fields: [userId], references: [id])
+
+  field Field @relation(fields: [fieldId], references: [id])
+
+  rating  Int
+  comment String?
+
+  createdAt TimestamptzString @default(now())
+}
+
+model Tournament {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  startDate   TimestamptzString
+  endDate     TimestamptzString
+
+  organizerId Int
+  organizer   User @relation(fields: [organizerId], references: [id])
+
+  createdAt TimestamptzString @default(now())
+  updatedAt temporal.updatedAtString()
+
+  participants TournamentParticipant[]
+}
+
+model TournamentParticipant {
+  id           Int      @id @default(autoincrement())
+
+  tournamentId Int
+  userId       Int
+
+  tournament Tournament @relation(fields: [tournamentId], references: [id])
+  user       User       @relation(fields: [userId], references: [id])
+
+  joinedAt TimestamptzString @default(now())
+
+  @@unique([tournamentId, userId])
+}
+
+model Notification {
+  id Int @id @default(autoincrement())
+
+  userId Int
+ user User @relation(
+  fields: [userId],
+  references: [id],
+)
+
+  title   String
+  message String
+  isRead  Boolean @default(false)
+
+  createdAt TimestamptzString @default(now())
+}

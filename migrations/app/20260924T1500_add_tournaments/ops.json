@@ -1,0 +1,365 @@
+[
+  {
+    "id": "table.tournament",
+    "label": "Create table \"tournament\"",
+    "summary": "Creates table \"tournament\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "tournament"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"tournament\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"tournament\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"tournament\"",
+        "sql": "CREATE TABLE \"public\".\"tournament\" (\n  \"createdAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"description\" text,\n  \"endDate\" timestamptz NOT NULL,\n  \"id\" SERIAL NOT NULL,\n  \"name\" text NOT NULL,\n  \"organizerId\" int4 NOT NULL,\n  \"startDate\" timestamptz NOT NULL,\n  \"updatedAt\" timestamptz NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"tournament\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"tournament\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "table.tournamentParticipant",
+    "label": "Create table \"tournamentParticipant\"",
+    "summary": "Creates table \"tournamentParticipant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "table",
+        "name": "tournamentParticipant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure table \"tournamentParticipant\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"tournamentParticipant\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create table \"tournamentParticipant\"",
+        "sql": "CREATE TABLE \"public\".\"tournamentParticipant\" (\n  \"id\" SERIAL NOT NULL,\n  \"joinedAt\" timestamptz DEFAULT (now()) NOT NULL,\n  \"tournamentId\" int4 NOT NULL,\n  \"userId\" int4 NOT NULL,\n  PRIMARY KEY (\"id\")\n)",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify table \"tournamentParticipant\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"tournamentParticipant\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "unique.tournamentParticipant.tournamentParticipant_tournamentId_userId_key",
+    "label": "Add unique constraint on \"tournamentParticipant\" (tournamentId, userId)",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "unique",
+        "name": "tournamentParticipant_tournamentId_userId_key",
+        "table": "tournamentParticipant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure constraint \"tournamentParticipant_tournamentId_userId_key\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "tournamentParticipant_tournamentId_userId_key",
+          "public",
+          "\"public\".\"tournamentParticipant\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add unique constraint \"tournamentParticipant_tournamentId_userId_key\"",
+        "sql": "ALTER TABLE \"public\".\"tournamentParticipant\" ADD CONSTRAINT \"tournamentParticipant_tournamentId_userId_key\" UNIQUE (\"tournamentId\", \"userId\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify constraint \"tournamentParticipant_tournamentId_userId_key\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "tournamentParticipant_tournamentId_userId_key",
+          "public",
+          "\"public\".\"tournamentParticipant\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.tournament.tournament_organizerId_idx_17a44ca9",
+    "label": "Create index \"tournament_organizerId_idx_17a44ca9\" on \"tournament\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "tournament_organizerId_idx_17a44ca9",
+        "table": "tournament"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"tournament_organizerId_idx_17a44ca9\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"tournament_organizerId_idx_17a44ca9\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"tournament_organizerId_idx_17a44ca9\"",
+        "sql": "CREATE INDEX \"tournament_organizerId_idx_17a44ca9\" ON \"public\".\"tournament\" (\"organizerId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"tournament_organizerId_idx_17a44ca9\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"tournament_organizerId_idx_17a44ca9\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.tournamentParticipant.tournamentParticipant_tournamentId_idx_d0bd97a6",
+    "label": "Create index \"tournamentParticipant_tournamentId_idx_d0bd97a6\" on \"tournamentParticipant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "tournamentParticipant_tournamentId_idx_d0bd97a6",
+        "table": "tournamentParticipant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"tournamentParticipant_tournamentId_idx_d0bd97a6\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"tournamentParticipant_tournamentId_idx_d0bd97a6\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"tournamentParticipant_tournamentId_idx_d0bd97a6\"",
+        "sql": "CREATE INDEX \"tournamentParticipant_tournamentId_idx_d0bd97a6\" ON \"public\".\"tournamentParticipant\" (\"tournamentId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"tournamentParticipant_tournamentId_idx_d0bd97a6\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"tournamentParticipant_tournamentId_idx_d0bd97a6\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "index.tournamentParticipant.tournamentParticipant_userId_idx_a489d58a",
+    "label": "Create index \"tournamentParticipant_userId_idx_a489d58a\" on \"tournamentParticipant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "index",
+        "name": "tournamentParticipant_userId_idx_a489d58a",
+        "table": "tournamentParticipant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure index \"tournamentParticipant_userId_idx_a489d58a\" does not exist",
+        "sql": "SELECT (to_regclass($1)) IS NULL AS \"result\"",
+        "params": [
+          "\"public\".\"tournamentParticipant_userId_idx_a489d58a\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "create index \"tournamentParticipant_userId_idx_a489d58a\"",
+        "sql": "CREATE INDEX \"tournamentParticipant_userId_idx_a489d58a\" ON \"public\".\"tournamentParticipant\" (\"userId\")",
+        "params": []
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify index \"tournamentParticipant_userId_idx_a489d58a\" exists",
+        "sql": "SELECT (to_regclass($1)) IS NOT NULL AS \"result\"",
+        "params": [
+          "\"public\".\"tournamentParticipant_userId_idx_a489d58a\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.tournament.tournament_organizerId_fkey",
+    "label": "Add foreign key \"tournament_organizerId_fkey\" on \"tournament\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "tournament_organizerId_fkey",
+        "table": "tournament"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"tournament_organizerId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "tournament_organizerId_fkey",
+          "public",
+          "\"public\".\"tournament\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"tournament_organizerId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"tournament\"\nADD CONSTRAINT \"tournament_organizerId_fkey\"\nFOREIGN KEY (\"organizerId\")\nREFERENCES \"public\".\"user\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"tournament_organizerId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "tournament_organizerId_fkey",
+          "public",
+          "\"public\".\"tournament\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.tournamentParticipant.tournamentParticipant_tournamentId_fkey",
+    "label": "Add foreign key \"tournamentParticipant_tournamentId_fkey\" on \"tournamentParticipant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "tournamentParticipant_tournamentId_fkey",
+        "table": "tournamentParticipant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"tournamentParticipant_tournamentId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "tournamentParticipant_tournamentId_fkey",
+          "public",
+          "\"public\".\"tournamentParticipant\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"tournamentParticipant_tournamentId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"tournamentParticipant\"\nADD CONSTRAINT \"tournamentParticipant_tournamentId_fkey\"\nFOREIGN KEY (\"tournamentId\")\nREFERENCES \"public\".\"tournament\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"tournamentParticipant_tournamentId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "tournamentParticipant_tournamentId_fkey",
+          "public",
+          "\"public\".\"tournamentParticipant\""
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foreignKey.tournamentParticipant.tournamentParticipant_userId_fkey",
+    "label": "Add foreign key \"tournamentParticipant_userId_fkey\" on \"tournamentParticipant\"",
+    "operationClass": "additive",
+    "target": {
+      "id": "postgres",
+      "details": {
+        "schema": "public",
+        "objectType": "foreignKey",
+        "name": "tournamentParticipant_userId_fkey",
+        "table": "tournamentParticipant"
+      }
+    },
+    "precheck": [
+      {
+        "description": "ensure FK \"tournamentParticipant_userId_fkey\" does not exist",
+        "sql": "SELECT NOT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "tournamentParticipant_userId_fkey",
+          "public",
+          "\"public\".\"tournamentParticipant\""
+        ]
+      }
+    ],
+    "execute": [
+      {
+        "description": "add FK \"tournamentParticipant_userId_fkey\"",
+        "sql": "ALTER TABLE \"public\".\"tournamentParticipant\"\nADD CONSTRAINT \"tournamentParticipant_userId_fkey\"\nFOREIGN KEY (\"userId\")\nREFERENCES \"public\".\"user\" (\"id\")"
+      }
+    ],
+    "postcheck": [
+      {
+        "description": "verify FK \"tournamentParticipant_userId_fkey\" exists",
+        "sql": "SELECT EXISTS (SELECT 1 AS \"one\" FROM \"pg_constraint\" AS \"c\" INNER JOIN \"pg_namespace\" AS \"n\" ON \"n\".\"oid\" = \"c\".\"connamespace\" WHERE (\"c\".\"conname\" = $1 AND \"n\".\"nspname\" = $2 AND \"c\".\"conrelid\" = to_regclass($3))) AS \"result\"",
+        "params": [
+          "tournamentParticipant_userId_fkey",
+          "public",
+          "\"public\".\"tournamentParticipant\""
+        ]
+      }
+    ]
+  }
+]

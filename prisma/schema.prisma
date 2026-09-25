@@ -1,0 +1,192 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  PLAYER
+  OWNER
+  ORGANIZER
+  ADMIN
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  name     String
+  email    String @unique
+  password String
+  phone    String?
+  role     Role   @default(PLAYER)
+
+  fields       Field[]
+  bookings     Booking[]
+  teamMembers  TeamMember[]
+  reviews      Review[]
+
+  organizedTournaments Tournament[] @relation("Organizer")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Field {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  address     String
+  pricePerHour Float
+
+  ownerId Int
+  owner   User @relation(fields: [ownerId], references: [id])
+
+  bookings Booking[]
+  reviews  Review[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Booking {
+  id Int @id @default(autoincrement())
+
+  userId  Int
+  fieldId Int
+
+  user  User  @relation(fields: [userId], references: [id])
+  field Field @relation(fields: [fieldId], references: [id])
+
+  startTime  DateTime
+  endTime    DateTime
+  totalPrice Float
+
+  status BookingStatus @default(PENDING)
+
+  payment Payment?
+
+  createdAt DateTime @default(now())
+}
+
+model Payment {
+  id Int @id @default(autoincrement())
+
+  bookingId Int     @unique
+  booking   Booking @relation(fields: [bookingId], references: [id])
+
+  amount        Float
+  method        String
+  transactionId String?
+  status        PaymentStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+}
+
+model Team {
+  id   Int     @id @default(autoincrement())
+  name String
+  logo String?
+
+  members     TeamMember[]
+  tournaments TournamentTeam[]
+
+  homeMatches Match[] @relation("HomeTeam")
+  awayMatches Match[] @relation("AwayTeam")
+
+  createdAt DateTime @default(now())
+}
+
+model TeamMember {
+  id Int @id @default(autoincrement())
+
+  teamId Int
+  userId Int
+
+  team Team @relation(fields: [teamId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  joinedAt DateTime @default(now())
+}
+
+model Tournament {
+  id              Int      @id @default(autoincrement())
+  name            String
+  description     String?
+  startDate       DateTime
+  endDate         DateTime
+  registrationFee Float
+  maxTeams        Int
+
+  organizerId Int
+  organizer   User @relation("Organizer", fields: [organizerId], references: [id])
+
+  teams   TournamentTeam[]
+  matches Match[]
+
+  createdAt DateTime @default(now())
+}
+
+model TournamentTeam {
+  id Int @id @default(autoincrement())
+
+  tournamentId Int
+  teamId       Int
+
+  tournament Tournament @relation(fields: [tournamentId], references: [id])
+  team       Team       @relation(fields: [teamId], references: [id])
+
+  joinedAt DateTime @default(now())
+
+  @@unique([tournamentId, teamId])
+}
+
+model Match {
+  id Int @id @default(autoincrement())
+
+  tournamentId Int
+  homeTeamId   Int
+  awayTeamId   Int
+  fieldId      Int?
+
+  tournament Tournament @relation(fields: [tournamentId], references: [id])
+
+  homeTeam Team @relation("HomeTeam", fields: [homeTeamId], references: [id])
+  awayTeam Team @relation("AwayTeam", fields: [awayTeamId], references: [id])
+
+  field Field? @relation(fields: [fieldId], references: [id])
+
+  scheduledAt DateTime
+  homeScore   Int @default(0)
+  awayScore   Int @default(0)
+}
+
+model Review {
+  id Int @id @default(autoincrement())
+
+  userId  Int
+  fieldId Int
+
+  user  User  @relation(fields: [userId], references: [id])
+  field Field @relation(fields: [fieldId], references: [id])
+
+  rating  Int
+  comment String?
+
+  createdAt DateTime @default(now())
+}

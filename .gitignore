@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+.env
+
+
+.agents/
+.claude/
+.cursor/
+.devin/
+
+migration_backups/
