@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/server.ts",
+    "start": "tsx src/server.ts",
     "test": "jest",
     "postinstall": "prisma skills sync || exit 0",
     "contract:emit": "prisma contract emit"
