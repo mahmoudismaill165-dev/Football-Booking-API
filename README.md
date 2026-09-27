@@ -1,23 +1,43 @@
-# Football Booking API
+# Football Booking Platform
 
-Backend API for a football field booking platform.
+Full-stack football field booking application.
 
-The project handles users, football fields, bookings, payments, reviews, tournaments, and notifications.
+The project allows users to browse football fields, create bookings, manage payments, write reviews, join tournaments, and receive notifications.
 
 ## Tech Stack
 
+### Frontend
+
+* React
 * TypeScript
+* Vite
+* React Router
+* Axios
+
+### Backend
+
 * Node.js
 * Express.js
-* PostgreSQL
-* Prisma ORM
+* TypeScript
 * JWT
-* bcrypt
 * Zod
 * Swagger
+
+### Database
+
+* PostgreSQL
+* Prisma ORM
+
+### Testing
+
 * Jest
 * Supertest
+
+### Other
+
 * Cloudinary
+* Git
+* GitHub
 
 ## Features
 
@@ -28,24 +48,26 @@ The project handles users, football fields, bookings, payments, reviews, tournam
 * JWT authentication
 * Role-based authorization
 * User profile
+* Logout
 * Admin user management
 * Admin statistics
 
-### Football Fields
+### Fields
 
 * Create field
 * Get all fields
 * Get field by ID
+* Search and filtering
 * Pagination
-* Owner-based field management
+* Owner field management
 
 ### Bookings
 
 * Create booking
-* Check for conflicting bookings
-* Calculate booking price automatically
-* Get player bookings
-* Get owner bookings
+* Check booking conflicts
+* Calculate booking price
+* View player bookings
+* View owner bookings
 * Confirm booking
 * Cancel booking
 
@@ -55,14 +77,14 @@ The project handles users, football fields, bookings, payments, reviews, tournam
 * Upload payment proof
 * Verify payment
 * Reject payment
-* Update booking status after payment verification
+* Update booking status
 
 ### Reviews
 
 * Create review
 * Update review
 * Delete review
-* Get reviews for a field
+* Get field reviews
 * Admin review management
 
 ### Tournaments
@@ -71,13 +93,12 @@ The project handles users, football fields, bookings, payments, reviews, tournam
 * Update tournament
 * Delete tournament
 * Join tournament
-* Get tournament participants
+* View tournament participants
 
 ### Notifications
 
-Notifications are created automatically for important actions such as:
+The application creates notifications for important actions such as:
 
-* New account
 * New booking
 * Booking confirmation
 * Booking cancellation
@@ -88,7 +109,36 @@ Notifications are created automatically for important actions such as:
 * New review
 * Tournament updates
 
+Users can also view their notifications and mark them as read.
+
+## User Roles
+
+The application has four roles:
+
+```text
+PLAYER
+OWNER
+ORGANIZER
+ADMIN
+```
+
+Each role has different permissions.
+
 ## Project Structure
+
+The project contains two applications:
+
+```text
+football-booking/
+│
+├── football-booking-api/
+│   └── src/
+│
+└── football-booking-web/
+    └── src/
+```
+
+### Backend
 
 ```text
 src/
@@ -104,42 +154,52 @@ src/
 └── server.ts
 ```
 
-The project follows a simple flow:
+The backend follows this structure:
 
 ```text
-Route
+Routes
   ↓
 Middleware
   ↓
-Controller
+Controllers
   ↓
-Service
+Services
   ↓
 Prisma
   ↓
 PostgreSQL
 ```
 
+### Frontend
+
+```text
+src/
+├── components/
+├── pages/
+├── layouts/
+├── services/
+├── context/
+├── hooks/
+├── types/
+├── utils/
+├── App.tsx
+├── main.tsx
+└── index.css
+```
+
 ## Authentication
 
-Protected endpoints use JWT authentication.
+The API uses JWT for authentication.
+
+Protected requests require:
 
 ```text
 Authorization: Bearer <token>
 ```
 
-The API also uses role-based middleware for roles such as:
-
-```text
-PLAYER
-OWNER
-ORGANIZER
-ADMIN
-```
-
 ## Validation
 
-Request data is validated using Zod before reaching the controllers.
+Request data is validated using Zod.
 
 Example booking request:
 
@@ -153,19 +213,17 @@ Example booking request:
 
 ## API Documentation
 
-Swagger UI is available at:
+Swagger UI:
 
 ```text
 http://localhost:8000/api-docs
 ```
 
-It can be used to test the API endpoints directly, including authenticated endpoints.
-
 ## Testing
 
-The project uses Jest and Supertest for API testing.
+The backend uses Jest and Supertest.
 
-Tests cover the main backend modules, including:
+Tests cover:
 
 * Authentication
 * Fields
@@ -175,13 +233,13 @@ Tests cover the main backend modules, including:
 * Tournaments
 * Notifications
 
-Run tests with:
+Run tests:
 
 ```bash
 npm test
 ```
 
-## Running Locally
+## Running the Backend
 
 Install dependencies:
 
@@ -200,26 +258,46 @@ CLOUDINARY_API_KEY=your_cloudinary_api_key
 CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 ```
 
-Start the development server:
+Start the backend:
 
 ```bash
 npm run dev
 ```
 
-Server:
+Backend:
 
 ```text
 http://localhost:8000
 ```
 
-Swagger:
+## Running the Frontend
+
+Enter the frontend directory:
+
+```bash
+cd football-booking-web
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the frontend:
+
+```bash
+npm run dev
+```
+
+Frontend:
 
 ```text
-http://localhost:8000/api-docs
+http://localhost:5173
 ```
 
 ## Author
 
 Mahmoud Ismail
 
-Backend Developer
+Backend / Full-Stack Developer
