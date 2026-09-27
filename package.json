@@ -7,6 +7,9 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "start": "tsx src/server.ts",
+    "client": "npm --prefix frontend run dev",
+    "client:build": "npm --prefix frontend run build",
+    "client:preview": "npm --prefix frontend run preview",
     "test": "jest",
     "postinstall": "prisma skills sync || exit 0",
     "contract:emit": "prisma contract emit"
