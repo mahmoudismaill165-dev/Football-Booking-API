@@ -53,6 +53,7 @@ jobs:
 
       - name: Run Tests
         env:
+          NODE_ENV: "test"
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/football_booking_test_db"
           JWT_SECRET: "ci-testing-jwt-secret"
         run: npm test -- --runInBand

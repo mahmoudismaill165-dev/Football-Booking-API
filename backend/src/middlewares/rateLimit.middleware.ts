@@ -6,6 +6,7 @@ export const authRateLimiter = rateLimit({
   max: 10, // Max 10 attempts per 15 minutes per IP
   standardHeaders: true,
   legacyHeaders: false,
+  skip: () => process.env.NODE_ENV === "test",
   message: {
     success: false,
     error: {
@@ -21,6 +22,7 @@ export const apiRateLimiter = rateLimit({
   max: 100, // Max 100 requests per 15 minutes
   standardHeaders: true,
   legacyHeaders: false,
+  skip: () => process.env.NODE_ENV === "test",
   message: {
     success: false,
     error: {
