@@ -43,13 +43,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Stop system PostgreSQL
+        run: sudo systemctl stop postgresql || true
+
       - name: Setup Database
         env:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/football_booking_test_db"
-        run: npx prisma db push --skip-generate || true
+        run: npx prisma db migrate
 
       - name: Run Tests
         env:
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/football_booking_test_db"
           JWT_SECRET: "ci-testing-jwt-secret"
-        run: npm test
+        run: npm test -- --runInBand
