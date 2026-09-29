@@ -9,6 +9,8 @@
     "start": "tsx src/server.ts",
     "build": "npx tsc",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit",
+    "seed": "tsx src/prisma/seed.ts",
+    "db:migrate": "prisma db migrate",
     "contract:emit": "prisma contract emit"
   },
   "keywords": [],
