@@ -1,8 +1,8 @@
 {
-  "name": "koora-arena-monorepo",
+  "name": "koora-arena-nodejs",
   "version": "1.0.0",
   "private": true,
-  "description": "Koora Arena - Football Pitch Booking & Tournament Platform (Monorepo)",
+  "description": "Koora Arena_Node.js - Football Pitch Booking & Tournament Platform",
   "scripts": {
     "dev": "npm run dev:backend",
     "dev:all": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",

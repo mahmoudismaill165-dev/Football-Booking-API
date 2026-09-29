@@ -1,4 +1,4 @@
-# ⚽ Koora Arena - Football Booking & Tournament Platform
+# Koora Arena_Node.js - Football Booking & Tournament Platform
 
 [![Node.js](https://img.shields.io/badge/Node.js-v20-brightgreen.svg)](https://nodejs.org/)
 [![Express.js](https://img.shields.io/badge/Express.js-v5.0-blue.svg)](https://expressjs.com/)
@@ -14,7 +14,7 @@ Designed with robust concurrency control to prevent double-booking collisions, r
 
 ---
 
-## 📸 Screenshots & UI Preview
+## Screenshots & UI Preview
 
 | Interactive Pitch Discovery & Hero | Reservation & Advisory Lock Booking Modal |
 |:---:|:---:|
@@ -22,7 +22,7 @@ Designed with robust concurrency control to prevent double-booking collisions, r
 
 ---
 
-## 🌟 Core Highlights & Features
+## Core Highlights & Features
 
 1. **Concurrency Protection via PostgreSQL Advisory Locks**:
    - Uses `pg_advisory_xact_lock(fieldId)` inside atomic database transactions (`db.transaction`).
@@ -47,7 +47,7 @@ Designed with robust concurrency control to prevent double-booking collisions, r
 
 ---
 
-## 🛠️ Tech Stack & Architecture
+## Tech Stack & Architecture
 
 - **Backend Framework**: Node.js (v20+), Express.js (v5.0), TypeScript (v5.9)
 - **Database & Data Access**: PostgreSQL 16, Prisma 8 ORM (`@prisma/orm-postgres`)
@@ -59,10 +59,10 @@ Designed with robust concurrency control to prevent double-booking collisions, r
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```text
-football-booking-api/
+Koora Arena_Node.js/
 │
 ├── backend/                       # Express.js REST API & Database Layer
 │   ├── src/
@@ -95,7 +95,7 @@ football-booking-api/
 
 ---
 
-## 📊 Database Entity Relationship Diagram (ERD)
+## Database Entity Relationship Diagram (ERD)
 
 ```mermaid
 erDiagram
@@ -214,7 +214,7 @@ erDiagram
 
 ---
 
-## 🔒 Concurrency & Race Condition Protection
+## Concurrency & Race Condition Protection
 
 When multiple players click "Book" for the exact same pitch and time slot concurrently, naïve validation (`findFirst` followed by `create`) results in double bookings.
 
@@ -269,7 +269,7 @@ export async function createBooking(data: CreateBookingData) {
 
 ---
 
-## 🔄 Booking Lifecycle & State Transitions
+## Booking Lifecycle & State Transitions
 
 ```mermaid
 stateDiagram-v2
@@ -284,7 +284,7 @@ stateDiagram-v2
 
 ---
 
-## 👥 Roles & Permissions
+## Roles & Permissions
 
 Users choose their role upon registration (`PLAYER`, `OWNER`, `ORGANIZER`). The `ADMIN` role is assigned for system management.
 
@@ -297,9 +297,9 @@ Users choose their role upon registration (`PLAYER`, `OWNER`, `ORGANIZER`). The 
 
 ---
 
-## 📚 Key API Endpoints Summary
+## Key API Endpoints Summary
 
-> 💡 **Interactive Swagger UI**: Full schemas, request parameters, and live runners are available at [`http://localhost:8000/api-docs`](http://localhost:8000/api-docs).
+> **Interactive Swagger UI**: Full schemas, request parameters, and live runners are available at [`http://localhost:8000/api-docs`](http://localhost:8000/api-docs).
 
 | Category | Method | Endpoint | Required Role | Notes / Rate Limit |
 |---|---|---|---|---|
@@ -330,7 +330,7 @@ Users choose their role upon registration (`PLAYER`, `OWNER`, `ORGANIZER`). The 
 
 ---
 
-## 📡 Sample Request & Response Payloads
+## Sample Request & Response Payloads
 
 ### 1. User Login (`POST /api/auth/login`)
 ```json
@@ -397,7 +397,7 @@ Users choose their role upon registration (`PLAYER`, `OWNER`, `ORGANIZER`). The 
 
 ---
 
-## ⚙️ Environment Variables
+## Environment Variables
 
 Configure your environment in `backend/.env` (reference `backend/.env.example`):
 
@@ -415,7 +415,7 @@ Configure your environment in `backend/.env` (reference `backend/.env.example`):
 
 ---
 
-## 🚀 Quick Start & Local Setup
+## Quick Start & Local Setup
 
 ### Prerequisites
 - **Node.js** (v20 or newer)
@@ -424,8 +424,8 @@ Configure your environment in `backend/.env` (reference `backend/.env.example`):
 
 ### 1. Clone & Install Dependencies
 ```bash
-git clone https://github.com/mahmoudismaill165-dev/Football-Booking-API.git
-cd Football-Booking-API
+git clone https://github.com/mahmoudismaill165-dev/Football-Booking-API.git "Koora Arena_Node.js"
+cd "Koora Arena_Node.js"
 
 # Installs root, backend, and frontend dependencies
 npm run install:all
@@ -471,7 +471,7 @@ npm run dev:frontend  # Vite React App only
 
 ---
 
-## 🐳 Docker Deployment
+## Docker Deployment
 
 To run PostgreSQL and the API in containerized environments:
 
@@ -488,7 +488,7 @@ docker-compose logs -f
 
 ---
 
-## 🧪 Automated Testing & CI
+## Automated Testing & CI
 
 Integration tests cover authentication, authorization middleware, pitch discovery, concurrency locks, payment verification, and tournament lifecycles:
 
@@ -503,7 +503,7 @@ All pushes and pull requests trigger automated GitHub Actions CI workflow runs (
 
 ---
 
-## 🗺️ Roadmap & Future Enhancements
+## Roadmap & Future Enhancements
 
 - [ ] **Payment Gateways**: Direct payment gateway integration (Stripe, Paymob).
 - [ ] **Real-time Notifications**: Socket.io integration for instant booking confirmations and match score updates.
@@ -512,14 +512,13 @@ All pushes and pull requests trigger automated GitHub Actions CI workflow runs (
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the [ISC License](LICENSE).
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 **Mahmoud Ismail**  
-Backend Developer & Full-Stack Engineer  
-- **GitHub**: [@mahmoudismaill165-dev](https://github.com/mahmoudismaill165-dev)
+Backend Developer & Full-Stack Engineer
