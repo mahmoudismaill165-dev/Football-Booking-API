@@ -56,11 +56,4 @@ jobs:
           CLOUDINARY_CLOUD_NAME: "test"
           CLOUDINARY_API_KEY: "12345"
           CLOUDINARY_API_SECRET: "secret"
-        run: |
-          npm test -- --runInBand 2>&1 | tee test.log
-          EXIT_CODE=${PIPESTATUS[0]}
-          if [ $EXIT_CODE -ne 0 ]; then
-            HEAD_LOG=$(head -n 25 test.log | tr '\n' ' | ')
-            echo "::error::Exit $EXIT_CODE - Log: $HEAD_LOG"
-            exit $EXIT_CODE
-          fi
+        run: npm test -- --runInBand
