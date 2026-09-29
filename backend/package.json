@@ -9,11 +9,10 @@
     "start": "tsx src/server.ts",
     "build": "npx tsc",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --forceExit",
-    "postinstall": "prisma skills sync || exit 0",
     "contract:emit": "prisma contract emit"
   },
   "keywords": [],
-  "author": "",
+  "author": "Mahmoud Ismail",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^7.10.0",
