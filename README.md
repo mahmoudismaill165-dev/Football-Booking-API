@@ -6,7 +6,7 @@
 [![Prisma](https://img.shields.io/badge/Prisma-v8.0--rc-5A67D8.svg)](https://www.prisma.io/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-v16-336791.svg)](https://www.postgresql.org/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg)](https://www.docker.com/)
-[![Build & Test](https://github.com/mahmoudismaill165-dev/Football-Booking-API/actions/workflows/ci.yml/badge.svg)](https://github.com/mahmoudismaill165-dev/Football-Booking-API/actions)
+[![Build & Test](https://github.com/mahmoudismaill165-dev/Koora-Arena_Node.js/actions/workflows/ci.yml/badge.svg)](https://github.com/mahmoudismaill165-dev/Koora-Arena_Node.js/actions)
 
 A full-stack football pitch reservation and tournament management platform. Built with **Node.js**, **Express 5**, **TypeScript**, **Prisma 8 ORM**, **PostgreSQL**, and a modern **React + Vite** client.
 
@@ -424,7 +424,7 @@ Configure your environment in `backend/.env` (reference `backend/.env.example`):
 
 ### 1. Clone & Install Dependencies
 ```bash
-git clone https://github.com/mahmoudismaill165-dev/Football-Booking-API.git "Koora Arena_Node.js"
+git clone https://github.com/mahmoudismaill165-dev/Koora-Arena_Node.js.git "Koora Arena_Node.js"
 cd "Koora Arena_Node.js"
 
 # Installs root, backend, and frontend dependencies
