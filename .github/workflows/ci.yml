@@ -22,7 +22,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: football_booking_test_db
         ports:
-          - 5432:5432
+          - 5433:5432
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -43,18 +43,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Stop system PostgreSQL
-        run: sudo systemctl stop postgresql || true
-
       - name: Setup Database
         env:
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/football_booking_test_db"
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5433/football_booking_test_db"
         run: npx prisma db migrate
 
       - name: Run Tests
         env:
           NODE_ENV: "test"
-          DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/football_booking_test_db"
+          DATABASE_URL: "postgresql://postgres:postgres@localhost:5433/football_booking_test_db"
           JWT_SECRET: "ci-testing-jwt-secret"
           CLOUDINARY_CLOUD_NAME: "test"
           CLOUDINARY_API_KEY: "12345"
