@@ -57,9 +57,9 @@ jobs:
           CLOUDINARY_API_KEY: "12345"
           CLOUDINARY_API_SECRET: "secret"
         run: |
-          npm test -- --runInBand --verbose 2>&1 | tee test.log
+          npm test -- --runInBand 2>&1 | tee test.log
           if [ ${PIPESTATUS[0]} -ne 0 ]; then
-            echo "::error::Tests failed! Printing summary:"
-            tail -n 100 test.log
+            FAIL_SUMMARY=$(grep -A 2 -E "(FAIL|●)" test.log | head -n 30 | tr '\n' ' ')
+            echo "::error::Jest Failure: $FAIL_SUMMARY"
             exit 1
           fi
