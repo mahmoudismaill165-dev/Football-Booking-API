@@ -58,8 +58,9 @@ jobs:
           CLOUDINARY_API_SECRET: "secret"
         run: |
           npm test -- --runInBand 2>&1 | tee test.log
-          if [ ${PIPESTATUS[0]} -ne 0 ]; then
-            FAIL_SUMMARY=$(grep -A 2 -E "(FAIL|●)" test.log | head -n 30 | tr '\n' ' ')
-            echo "::error::Jest Failure: $FAIL_SUMMARY"
-            exit 1
+          EXIT_CODE=${PIPESTATUS[0]}
+          if [ $EXIT_CODE -ne 0 ]; then
+            HEAD_LOG=$(head -n 25 test.log | tr '\n' ' | ')
+            echo "::error::Exit $EXIT_CODE - Log: $HEAD_LOG"
+            exit $EXIT_CODE
           fi
