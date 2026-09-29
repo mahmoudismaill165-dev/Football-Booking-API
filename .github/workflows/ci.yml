@@ -56,4 +56,7 @@ jobs:
           NODE_ENV: "test"
           DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/football_booking_test_db"
           JWT_SECRET: "ci-testing-jwt-secret"
+          CLOUDINARY_CLOUD_NAME: "test"
+          CLOUDINARY_API_KEY: "12345"
+          CLOUDINARY_API_SECRET: "secret"
         run: npm test -- --runInBand
