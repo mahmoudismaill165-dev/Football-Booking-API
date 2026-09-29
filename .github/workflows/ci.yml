@@ -56,4 +56,10 @@ jobs:
           CLOUDINARY_CLOUD_NAME: "test"
           CLOUDINARY_API_KEY: "12345"
           CLOUDINARY_API_SECRET: "secret"
-        run: npm test -- --runInBand
+        run: |
+          npm test -- --runInBand --verbose 2>&1 | tee test.log
+          if [ ${PIPESTATUS[0]} -ne 0 ]; then
+            echo "::error::Tests failed! Printing summary:"
+            tail -n 100 test.log
+            exit 1
+          fi
