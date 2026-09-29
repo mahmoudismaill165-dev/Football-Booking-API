@@ -81,12 +81,27 @@ export async function loginUser(
     );
   }
 
-  const token = jwt.sign(
+  const jwtSecret = process.env.JWT_SECRET || "default-jwt-secret";
+  const refreshSecret = process.env.JWT_REFRESH_SECRET || jwtSecret;
+
+  const accessToken = jwt.sign(
     {
       id: user.id,
       role: user.role,
     },
-    process.env.JWT_SECRET!,
+    jwtSecret,
+    {
+      expiresIn: "1h",
+    }
+  );
+
+  const refreshToken = jwt.sign(
+    {
+      id: user.id,
+      role: user.role,
+      type: "refresh",
+    },
+    refreshSecret,
     {
       expiresIn: "7d",
     }
@@ -94,8 +109,57 @@ export async function loginUser(
 
   return {
     user: sanitizeUser(user),
-    token,
+    accessToken,
+    refreshToken,
+    token: accessToken, // Backward compatibility
   };
+}
+
+export async function refreshAccessToken(refreshToken: string) {
+  if (!refreshToken) {
+    throw new ApiError("Refresh token is required", 400);
+  }
+
+  try {
+    const jwtSecret = process.env.JWT_SECRET || "default-jwt-secret";
+    const refreshSecret = process.env.JWT_REFRESH_SECRET || jwtSecret;
+
+    const decoded = jwt.verify(refreshToken, refreshSecret) as {
+      id: number;
+      role: string;
+      type?: string;
+    };
+
+    if (decoded.type !== "refresh") {
+      throw new ApiError("Invalid refresh token type", 401);
+    }
+
+    const user = await db.orm.public.User
+      .where({ id: decoded.id })
+      .first();
+
+    if (!user) {
+      throw new ApiError("User no longer exists", 404);
+    }
+
+    const newAccessToken = jwt.sign(
+      {
+        id: user.id,
+        role: user.role,
+      },
+      jwtSecret,
+      {
+        expiresIn: "1h",
+      }
+    );
+
+    return {
+      accessToken: newAccessToken,
+    };
+  } catch (error) {
+    if (error instanceof ApiError) throw error;
+    throw new ApiError("Invalid or expired refresh token", 401);
+  }
 }
 
 export async function getAllUsers() {

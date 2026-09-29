@@ -4,15 +4,14 @@ dotenv.config();
 import app from "./app.js";
 import { db } from "./prisma/db.js";
 
-const PORT = process.env.PORT || 8000;
+const PORT = Number(process.env.PORT) || 8000;
 
 async function startServer() {
   try {
-    const users = await db.orm.public.User.all();
+    // Verify DB connectivity
+    await db.orm.public.User.first();
 
-    console.log("Users:", users);
-
-    app.listen(PORT, () => {
+    app.listen(PORT, "0.0.0.0", () => {
       console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {

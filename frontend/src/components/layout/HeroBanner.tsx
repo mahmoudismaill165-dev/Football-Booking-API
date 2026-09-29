@@ -85,10 +85,11 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
           {t('hero.title')}{' '}
           <span
             style={{
-              background: 'linear-gradient(135deg, #34d399 0%, #10b981 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              textShadow: '0 0 25px rgba(16, 185, 129, 0.4)',
+              display: 'inline-block',
+              filter: 'drop-shadow(0 0 16px rgba(16, 185, 129, 0.6))',
+              transform: 'scale(1.15)',
+              marginRight: '0.35rem',
+              marginLeft: '0.35rem',
             }}
           >
             ⚽

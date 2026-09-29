@@ -6,10 +6,12 @@ import {
 } from "../middlewares/auth.middleware.js";
 
 import { authorizeRoles } from "../middlewares/role.middleware.js";
+import { authRateLimiter } from "../middlewares/rateLimit.middleware.js";
 
 import {
   register,
   login,
+  refreshToken,
   getProfile,
   getUsers,
   getUser,
@@ -20,9 +22,11 @@ import {
 
 const router = Router();
 
-router.post("/register", register);
+router.post("/register", authRateLimiter, register);
 
-router.post("/login", login);
+router.post("/login", authRateLimiter, login);
+
+router.post("/refresh", refreshToken);
 
 router.get(
   "/profile",

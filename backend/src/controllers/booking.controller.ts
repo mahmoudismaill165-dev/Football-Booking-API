@@ -40,11 +40,16 @@ export const getUserBookingsController = asyncHandler(
       });
     }
 
-    const bookings = await getUserBookings(req.user.id);
+    const page = req.query.page ? Number(req.query.page) : undefined;
+    const limit = req.query.limit ? Number(req.query.limit) : undefined;
+    const status = req.query.status as string | undefined;
+
+    const result = await getUserBookings(req.user.id, { page, limit, status });
 
     return res.status(200).json({
       message: "Bookings fetched successfully",
-      bookings,
+      bookings: result.data,
+      ...result,
     });
   }
 );
@@ -56,11 +61,16 @@ export const getOwnerBookingsController = asyncHandler(
       });
     }
 
-    const bookings = await getOwnerBookings(req.user.id);
+    const page = req.query.page ? Number(req.query.page) : undefined;
+    const limit = req.query.limit ? Number(req.query.limit) : undefined;
+    const status = req.query.status as string | undefined;
+
+    const result = await getOwnerBookings(req.user.id, { page, limit, status });
 
     return res.status(200).json({
       message: "Owner bookings fetched successfully",
-      bookings,
+      bookings: result.data,
+      ...result,
     });
   }
 );

@@ -32,26 +32,21 @@ export const BookingModal: React.FC<BookingModalProps> = ({
   const [endTime, setEndTime] = useState('20:00');
   const [loading, setLoading] = useState(false);
 
-  // Calculate duration and price
-  const { durationHours, totalPrice, isValidTime } = useMemo(() => {
-    const [startH, startM] = startTime.split(':').map(Number);
-    const [endH, endM] = endTime.split(':').map(Number);
+  // ⚠️ ALL hooks MUST be above the early return to avoid "hooks order" violation
+  // Calculate duration and price — uses field?.pricePerHour safely even when field=null
+  const startTotal = useMemo(() => {
+    const [h, m] = startTime.split(':').map(Number);
+    return h * 60 + m;
+  }, [startTime]);
 
-    const startTotal = startH * 60 + startM;
-    const endTotal = endH * 60 + endM;
+  const endTotal = useMemo(() => {
+    const [h, m] = endTime.split(':').map(Number);
+    return h * 60 + m;
+  }, [endTime]);
 
-    if (endTotal <= startTotal) {
-      return { durationHours: 0, totalPrice: 0, isValidTime: false };
-    }
-
-    const diffHours = (endTotal - startTotal) / 60;
-    const rate = field?.pricePerHour || 0;
-    return {
-      durationHours: diffHours,
-      totalPrice: diffHours * rate,
-      isValidTime: true,
-    };
-  }, [startTime, endTime, field?.pricePerHour]);
+  const isValidTime = endTotal > startTotal;
+  const durationHours = isValidTime ? (endTotal - startTotal) / 60 : 0;
+  const totalPrice = durationHours * (field?.pricePerHour || 0);
 
   if (!isOpen || !field) return null;
 

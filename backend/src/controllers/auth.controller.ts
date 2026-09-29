@@ -4,6 +4,7 @@ import { AuthRequest } from "../middlewares/auth.middleware.js";
 import {
   registerUser,
   loginUser,
+  refreshAccessToken,
   getAllUsers,
   getUserById,
   updateUserRole,
@@ -38,6 +39,19 @@ export const login = asyncHandler(
 
     return res.status(200).json({
       message: "Login successful",
+      ...result,
+    });
+  }
+);
+
+export const refreshToken = asyncHandler(
+  async (req: Request, res: Response) => {
+    const token = req.body.refreshToken || req.headers["x-refresh-token"];
+
+    const result = await refreshAccessToken(String(token));
+
+    return res.status(200).json({
+      message: "Token refreshed successfully",
       ...result,
     });
   }

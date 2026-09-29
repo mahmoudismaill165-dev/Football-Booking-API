@@ -1,0 +1,11 @@
+node_modules
+npm-debug.log
+frontend
+dist
+.git
+.gitignore
+.env
+.vscode
+.agents
+migration_backups
+coverage
